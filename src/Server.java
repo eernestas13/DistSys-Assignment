@@ -78,6 +78,10 @@ public class Server extends JFrame {
             try {
                 DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
                 DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+                Thread t = new ClientHandler(socket, inputFromClient, outputToClient);
+
+                // Invoking the start() method
+                t.start();
             }catch (IOException e) {
                 System.err.println("Exception in class");
                 e.printStackTrace();

@@ -26,9 +26,8 @@ public class Server extends JFrame {
             // Create a server socket
             ServerSocket serverSocket = new ServerSocket(8000);
             jta.append("Server started at " + new Date() + '\n');
+            System.out.println("HELLO3");
 
-            // Listen for a connection request
-            //  Socket socket = serverSocket.accept();
 
             while (true) {
                 // Listen for a connection request
@@ -37,28 +36,6 @@ public class Server extends JFrame {
                 ThreadClass thread = new ThreadClass(socket);
                 thread.start();
             }
-
-//
-//      // Create data input and output streams
-//      DataInputStream inputFromClient = new DataInputStream(
-//        socket.getInputStream());
-//      DataOutputStream outputToClient = new DataOutputStream(
-//        socket.getOutputStream());
-//
-//      while (true) {
-//        // Receive radius from the client
-//        double radius = inputFromClient.readDouble();
-//
-//        // Compute area
-//        double area = radius * radius * Math.PI;
-//
-//        // Send area back to the client
-//        outputToClient.writeDouble(area);
-//
-//        jta.append("Radius received from client: " + radius + '\n');
-//        jta.append("Area found: " + area + '\n');
-//      }
-
 
         }
         catch(IOException ex) {
@@ -72,16 +49,15 @@ public class Server extends JFrame {
         private DataInputStream inputFromClient;
         private DataOutputStream outputToClient;
 
-        public ThreadClass(Socket socket){
+        public ThreadClass(Socket socket) throws IOException {
             this.socket = socket;
+            this.outputToClient = new DataOutputStream(socket.getOutputStream());
+            this.inputFromClient = new DataInputStream(socket.getInputStream());
             address = socket.getInetAddress();
             try {
                 DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
                 DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
-                Thread t = new ClientHandler(socket, inputFromClient, outputToClient);
 
-                // Invoking the start() method
-                t.start();
             }catch (IOException e) {
                 System.err.println("Exception in class");
                 e.printStackTrace();
@@ -95,7 +71,6 @@ public class Server extends JFrame {
                     System.out.println("HELLO");
                     // Receive radius from the client
                     double radius = inputFromClient.readDouble();
-
                     // Compute area
                     double area = radius * radius * Math.PI;
 
@@ -112,3 +87,4 @@ public class Server extends JFrame {
         }
     }
 }
+

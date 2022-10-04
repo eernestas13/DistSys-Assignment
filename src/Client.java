@@ -34,7 +34,7 @@ public class Client extends JFrame {
         jtf.addActionListener(new Listener()); // Register listener
 
         setTitle("Client");
-        setSize(500, 300);
+        setSize(400, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true); // It is necessary to show the frame here!
 
@@ -53,6 +53,7 @@ public class Client extends JFrame {
         catch (IOException ex) {
             jta.append(ex.toString() + '\n');
         }
+        jta.append("Connected to Server");
     }
 
     private class Listener implements ActionListener {

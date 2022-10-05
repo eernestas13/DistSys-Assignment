@@ -81,7 +81,7 @@ public class Retrieve {
                 }
             });
             p.add(prev_but);
-            next_but.addActionListener(new ActionListener() {
+            prev_but.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     try {
                         if (rs.previous()) {

@@ -1,12 +1,21 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.*;
 import javax.swing.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Date;
+import Login.Login;
 
 public class Server extends JFrame {
     // Text area for displaying contents
     private JTextArea jta = new JTextArea();
+    public static ResultSet rs;
 
     public static void main(String[] args) {
         new Server();
@@ -54,15 +63,45 @@ public class Server extends JFrame {
             this.outputToClient = new DataOutputStream(socket.getOutputStream());
             this.inputFromClient = new DataInputStream(socket.getInputStream());
             address = socket.getInetAddress();
-            try {
-                DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
-                DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
 
-            }catch (IOException e) {
-                System.err.println("Exception in class");
-                e.printStackTrace();
+            try {
+                if (loggedIn == false) {
+
+                    System.out.println("TRYING TO LOG IN");
+                    //start client server
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/assign1", "root", "");
+                    Statement st = con.createStatement();
+
+                    System.out.println("HELLO011111111");
+
+                    int id = inputFromClient.readInt();
+                    System.out.println("HELLO0111");
+                    rs = st.executeQuery("select * from students WHERE STUD_ID = '" + id + "'");
+                    if (rs.next()) {
+                        id = rs.getInt("STUD_ID");
+                        outputToClient.writeUTF(rs.getString("FNAME"));
+                        outputToClient.flush();
+                        st.executeUpdate("update students set TOT_REQ=TOT_REQ+1 where STUD_ID='" + id + "'");
+                        jta.append("Server Processing...\n " + " just connected " + " hostname: ");
+                        loggedIn = true;
+                        System.out.println("HELLO333333");
+
+                    } else {
+                        loggedIn = false;
+                        outputToClient.writeUTF("false");
+                        outputToClient.flush();
+                    }
+                } else {
+                    System.out.println("ELSE");
+                }
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
             }
+
+
         }
+
+
 
         public void run() {
             try {

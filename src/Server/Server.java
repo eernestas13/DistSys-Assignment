@@ -1,22 +1,20 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+package Server;
+
 import java.io.*;
 import java.net.*;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.awt.*;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Date;
-import Login.Login;
 
 public class Server extends JFrame {
     // Text area for displaying contents
     private JTextArea jta = new JTextArea();
     public static ResultSet rs;
-
+    public static boolean loggedIn = false;
     public static void main(String[] args) {
         new Server();
     }
@@ -31,18 +29,24 @@ public class Server extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true); // It is necessary to show the frame here!
 
+
         try {
             // Create a server socket
             ServerSocket serverSocket = new ServerSocket(8000);
-            jta.append("Server started at " + new Date() + '\n');
-            System.out.println("HELLO3");
+            jta.append("Server.Server started at " + new Date() + '\n');
+            System.out.println("Server.Server Started");
 
 
             while (true) {
                 // Listen for a connection request
                 Socket socket = serverSocket.accept();
                 // Connect to a client Thread
-                ThreadClass thread = new ThreadClass(socket);
+
+                DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
+                DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+
+
+                ThreadClass thread = new ThreadClass(socket , inputFromClient  , outputToClient);
                 thread.start();
             }
 
@@ -58,10 +62,15 @@ public class Server extends JFrame {
         private DataInputStream inputFromClient;
         private DataOutputStream outputToClient;
 
-        public ThreadClass(Socket socket) throws IOException {
+        //boolean loggedIn = false;
+
+
+
+
+        public ThreadClass(Socket socket , DataInputStream dataInputStream , DataOutputStream dataOutputStream) throws IOException {
             this.socket = socket;
-            this.outputToClient = new DataOutputStream(socket.getOutputStream());
-            this.inputFromClient = new DataInputStream(socket.getInputStream());
+            this.outputToClient = dataOutputStream;
+            this.inputFromClient = dataInputStream;
             address = socket.getInetAddress();
 
             try {
@@ -71,27 +80,28 @@ public class Server extends JFrame {
                     //start client server
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/assign1", "root", "");
                     Statement st = con.createStatement();
-
-                    System.out.println("HELLO011111111");
-
                     int id = inputFromClient.readInt();
-                    System.out.println("HELLO0111");
+                    System.out.println("User Input Read");
                     rs = st.executeQuery("select * from students WHERE STUD_ID = '" + id + "'");
                     if (rs.next()) {
                         id = rs.getInt("STUD_ID");
                         outputToClient.writeUTF(rs.getString("FNAME"));
                         outputToClient.flush();
                         st.executeUpdate("update students set TOT_REQ=TOT_REQ+1 where STUD_ID='" + id + "'");
-                        jta.append("Server Processing...\n " + " just connected " + " hostname: ");
+                      //  jta.append("Server.Server Processing...\n " + " just connected " + " hostname: ");
                         loggedIn = true;
-                        System.out.println("HELLO333333");
+                        jta.append("User Logged In" + '\n');
+                        System.out.println("Logged In");
 
                     } else {
                         loggedIn = false;
-                        outputToClient.writeUTF("false");
+                       // outputToClient.writeUTF("false");
                         outputToClient.flush();
+                        jta.append("User Login Failed"+ '\n');
                     }
                 } else {
+                    outputToClient.writeUTF("false");
+
                     System.out.println("ELSE");
                 }
             } catch (Exception ex) {
@@ -105,25 +115,27 @@ public class Server extends JFrame {
 
         public void run() {
             try {
-                while (true) {
+                    while (true) {
+                        System.out.println("Calculating..");
+                        // Receive radius from the client
+                        double radius = inputFromClient.readDouble();
+                        // Compute area
+                        double area = radius * radius * Math.PI;
 
-                    System.out.println("HELLO");
-                    // Receive radius from the client
-                    double radius = inputFromClient.readDouble();
-                    // Compute area
-                    double area = radius * radius * Math.PI;
+                        // Send area back to the client
+                        outputToClient.writeDouble(area);
 
-                    // Send area back to the client
-                    outputToClient.writeDouble(area);
-
-                    jta.append("Radius received from client: " + radius + '\n');
-                    jta.append("Area found: " + area + '\n');
-                }
+                        jta.append("Radius received from client: " + radius + '\n');
+                        jta.append("Area found: " + area + '\n');
+                    }
             } catch(Exception e) {
                 System.err.println(e + "on " + socket);
                 e.printStackTrace();
             }
         }
     }
+
+
+
 }
 

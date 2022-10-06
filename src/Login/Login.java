@@ -41,7 +41,7 @@ public class Login extends JFrame {
 //                outputToClient.writeUTF(rs.getString("FNAME"));
 //                outputToClient.flush();
 //                st.executeUpdate("update students set TOT_REQ=TOT_REQ+1 where STUD_ID='" + id + "'");
-//                jta.append("Server Processing...\n " + " just connected " + " hostname: ");
+//                jta.append("Server.Server Processing...\n " + " just connected " + " hostname: ");
 //                loggedIn = true;
 //                System.out.println("HELLO3");
 //
@@ -103,7 +103,7 @@ public class Login extends JFrame {
 //                    outputToClient.writeUTF(rs.getString("FNAME"));
 //                    outputToClient.flush();
 //                    st.executeUpdate("update students set TOT_REQ=TOT_REQ+1 where STUD_ID='" + id + "'");
-//                    jta.append("Server Processing...\n " + " just connected " + " hostname: ");
+//                    jta.append("Server.Server Processing...\n " + " just connected " + " hostname: ");
 //                    loggedIn = true;
 //                    System.out.println("HELLO3");
 //

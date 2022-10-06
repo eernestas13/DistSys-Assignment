@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" name="Changes" comment="Created Login window, trying to create a 'match' method using user input against SQL DB.">
-      <change afterPath="$PROJECT_DIR$/src/Login/Login.java" afterDir="false" />
+    <list default="true" id="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" name="Changes" comment="Login works, check with DB is in place.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Login.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Login/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Login/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server/Server.java" afterDir="false" />
     </list>
     <list id="81c60918-8da7-4618-84a5-d86110ec87e7" name="Changes by PStefans" comment="">
       <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +19,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -30,27 +29,21 @@
   <component name="LineStatusTrackerManager">
     <file path="$PROJECT_DIR$/src/Client.java">
       <ranges>
-        <range start1="0" end1="0" start2="0" end2="2" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="12" end1="12" start2="14" end2="16" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="33" end1="34" start2="37" end2="39" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="39" end1="39" start2="44" end2="57" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="58" end1="59" start2="76" end2="90" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/src/Server.java">
-      <ranges>
-        <range start1="0" end1="0" start2="0" end2="2" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="2" end1="3" start2="4" end2="6" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="5" end1="5" start2="8" end2="13" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="9" end1="9" start2="17" end2="18" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="23" end1="23" start2="32" end2="33" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="35" end1="36" start2="45" end2="51" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="51" end1="52" start2="66" end2="72" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="53" end1="55" start2="73" end2="75" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
-        <range start1="56" end1="56" start2="76" end2="77" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="57" end1="59" start2="78" end2="84" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="60" end1="65" start2="85" end2="115" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
-        <range start1="88" end1="88" start2="138" end2="141" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
+        <range start1="0" end1="0" start2="0" end2="3" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
+        <range start1="5" end1="5" start2="8" end2="9" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="8" end1="9" start2="12" end2="13" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="11" end1="12" start2="15" end2="23" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="13" end1="13" start2="24" end2="26" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
+        <range start1="16" end1="16" start2="29" end2="31" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="22" end1="28" start2="37" end2="57" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="29" end1="32" start2="58" end2="61" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="33" end1="34" start2="62" end2="63" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="36" end1="40" start2="65" end2="77" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="41" end1="41" start2="78" end2="82" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
+        <range start1="56" end1="57" start2="97" end2="99" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="59" end1="60" start2="101" end2="131" changelist="81c60918-8da7-4618-84a5-d86110ec87e7" />
+        <range start1="63" end1="63" start2="134" end2="135" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
+        <range start1="75" end1="76" start2="147" end2="148" changelist="7f5b709d-0c83-4a52-9543-37b6e2ef58f4" />
       </ranges>
     </file>
   </component>
@@ -67,7 +60,6 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/terne/IdeaProjects/mysql-connector-java-8.0.30/mysql-connector-java-8.0.30.jar&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
@@ -75,6 +67,11 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Client">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Client" />
@@ -98,7 +95,7 @@
       </method>
     </configuration>
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.Server" />
       <module name="DistSys-Assignment" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -164,7 +161,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664980790725</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Login works, check with DB is in place.">
+      <created>1664998722464</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1664998722464</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -183,6 +187,7 @@
     <MESSAGE value="Fixed Threads with a ClientHandler Class. Client receives answer for each radius sent." />
     <MESSAGE value="Fixed connection between Clients and Server, fixed calculations." />
     <MESSAGE value="Created Login window, trying to create a 'match' method using user input against SQL DB." />
-    <option name="LAST_COMMIT_MESSAGE" value="Created Login window, trying to create a 'match' method using user input against SQL DB." />
+    <MESSAGE value="Login works, check with DB is in place." />
+    <option name="LAST_COMMIT_MESSAGE" value="Login works, check with DB is in place." />
   </component>
 </project>

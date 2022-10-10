@@ -14,7 +14,8 @@ public class Server extends JFrame {
     // Text area for displaying contents
     private JTextArea jta = new JTextArea();
     public static ResultSet rs;
-    public static boolean loggedIn = false;
+    public static boolean loggedIn = true;
+    //^ was public static
     public static void main(String[] args) {
         new Server();
     }
@@ -35,8 +36,6 @@ public class Server extends JFrame {
             ServerSocket serverSocket = new ServerSocket(8000);
             jta.append("Server.Server started at " + new Date() + '\n');
             System.out.println("Server.Server Started");
-
-
             while (true) {
                 // Listen for a connection request
                 Socket socket = serverSocket.accept();
@@ -62,7 +61,6 @@ public class Server extends JFrame {
         private DataInputStream inputFromClient;
         private DataOutputStream outputToClient;
 
-        //boolean loggedIn = false;
 
 
 
@@ -74,7 +72,7 @@ public class Server extends JFrame {
             address = socket.getInetAddress();
 
             try {
-                if (loggedIn == false) {
+                while (loggedIn == false) {
 
                     System.out.println("TRYING TO LOG IN");
                     //start client server
@@ -99,10 +97,6 @@ public class Server extends JFrame {
                         outputToClient.flush();
                         jta.append("User Login Failed"+ '\n');
                     }
-                } else {
-                    outputToClient.writeUTF("false");
-
-                    System.out.println("ELSE");
                 }
             } catch (Exception ex) {
                 throw new RuntimeException(ex);

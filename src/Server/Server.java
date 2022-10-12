@@ -14,17 +14,19 @@ public class Server extends JFrame {
     // Text area for displaying contents
     private JTextArea jta = new JTextArea();
     public static ResultSet rs;
-    public static boolean loggedIn = true;
+    public static boolean loggedIn;
+
     //^ was public static
     public static void main(String[] args) {
         new Server();
     }
 
     public Server() {
+        // Server window Parameters
         // Place text area on the frame
         setLayout(new BorderLayout());
         add(new JScrollPane(jta), BorderLayout.CENTER);
-
+        System.out.println("1" + loggedIn);
         setTitle("Server");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,8 +46,8 @@ public class Server extends JFrame {
                 DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
                 DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
 
-
-                ThreadClass thread = new ThreadClass(socket , inputFromClient  , outputToClient);
+                //New thread creation
+                ThreadClass thread = new ThreadClass(socket, inputFromClient, outputToClient);
                 thread.start();
             }
 
@@ -70,46 +72,47 @@ public class Server extends JFrame {
             this.outputToClient = dataOutputStream;
             this.inputFromClient = dataInputStream;
             address = socket.getInetAddress();
-
-            try {
-                while (loggedIn == false) {
-
-                    System.out.println("TRYING TO LOG IN");
-                    //start client server
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/assign1", "root", "");
-                    Statement st = con.createStatement();
-                    int id = inputFromClient.readInt();
-                    System.out.println("User Input Read");
-                    rs = st.executeQuery("select * from students WHERE STUD_ID = '" + id + "'");
-                    if (rs.next()) {
-                        id = rs.getInt("STUD_ID");
-                        outputToClient.writeUTF(rs.getString("FNAME"));
-                        outputToClient.flush();
-                        st.executeUpdate("update students set TOT_REQ=TOT_REQ+1 where STUD_ID='" + id + "'");
-                      //  jta.append("Server.Server Processing...\n " + " just connected " + " hostname: ");
-                        loggedIn = true;
-                        jta.append("User Logged In" + '\n');
-                        System.out.println("Logged In");
-
-                    } else {
-                        loggedIn = false;
-                       // outputToClient.writeUTF("false");
-                        outputToClient.flush();
-                        jta.append("User Login Failed"+ '\n');
-                    }
-                }
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-
-
         }
 
 
 
         public void run() {
-            try {
-                    while (true) {
+
+            while (true) {
+                try {
+                    //Connection to local DB
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/assign1", "root", "");
+                    Statement st = con.createStatement();
+                    //User input for login stage
+                    if ( !loggedIn) {
+                        int id = inputFromClient.readInt();
+
+                        if (id > 1) {
+                            System.out.println("User Input Read");
+                            //A 'check' of users input against DB
+                            rs = st.executeQuery("select * from students WHERE STUD_ID = '" + id + "'");
+                            if (rs.next()) {
+                                //If there's a match, user is logged in and total requests get a +1 to that ID
+                                id = rs.getInt("STUD_ID");
+                                st.executeUpdate("update students set TOT_REQ=TOT_REQ+1 where STUD_ID='" + id + "'");
+                                //  jta.append("Server.Server Processing...\n " + " just connected " + " hostname: ");
+                                loggedIn = true;
+                                outputToClient.writeBoolean(loggedIn);
+                                jta.append("User Logged In" + '\n');
+                                System.out.println("Logged In");
+                                System.out.println("2" + loggedIn);
+                            } else {
+                                loggedIn = false;
+                                outputToClient.writeBoolean(loggedIn);
+                                System.out.println("3" + loggedIn);
+                                outputToClient.flush();
+                                jta.append("User Login Failed" + '\n');
+                            }
+                        }
+                    }
+
+                    if (loggedIn == true) {
+                        double area;
                         System.out.println("Calculating..");
                         // Receive radius from the client
                         double radius = inputFromClient.readDouble();
@@ -122,14 +125,13 @@ public class Server extends JFrame {
                         jta.append("Radius received from client: " + radius + '\n');
                         jta.append("Area found: " + area + '\n');
                     }
-            } catch(Exception e) {
-                System.err.println(e + "on " + socket);
-                e.printStackTrace();
+
+
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
     }
-
-
-
 }
 
